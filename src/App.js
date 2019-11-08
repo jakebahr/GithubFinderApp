@@ -4,7 +4,10 @@ import Navbar from './components/layout/Navbar';
 import Users from './components/users/Users';
 import Search from './components/users/Search';
 import Alert from './components/layout/Alert';
+<<<<<<< HEAD
 import About from './components/pages/About';
+=======
+>>>>>>> refs/remotes/origin/master
 import axios from 'axios';
 import './App.css';
 
@@ -52,6 +55,7 @@ class App extends Component {
         <Navbar />
         <div className='container'>
           <Alert alert={this.state.alert} />
+<<<<<<< HEAD
           <Switch>
             <Route exact path='/' render={props => ( 
             <Fragment>
@@ -61,6 +65,10 @@ class App extends Component {
             )} />
             <Route exact path='/about' component={About} />
           </Switch>
+=======
+          <Search searchUsers={this.searchUsers} clearUsers={this.clearUsers} showClear={users.length > 0 ? true: false} setAlert={this.setAlert} />
+          <Users loading={loading} users={users} />
+>>>>>>> refs/remotes/origin/master
         </div>
       </div>
       </Router>
