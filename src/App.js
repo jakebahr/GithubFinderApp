@@ -13,6 +13,7 @@ class App extends Component {
   state = {
     users: [],
     user: {},
+    repos: [],
     loading: false,
     alert: null
   };
@@ -34,14 +35,23 @@ class App extends Component {
     this.setState({ users: res.data.items, loading: false });
   };
 
-  //Get Single Github User
-getUser= async username => {
+  //Get User Repos
+getUserRepos = async username => {
   this.setState({ loading: true });
 
-  const res = await axios.get(`https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
+  const res = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
 
-    this.setState({ user: res.data, loading: false });
+    this.setState({ repos: res.data, loading: false });
   };
+
+  //Get Single Github User
+  getUser= async username => {
+    this.setState({ loading: true });
+  
+    const res = await axios.get(`https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
+  
+      this.setState({ user: res.data, loading: false });
+    };
 
   //Clear Users form State
   clearUsers = () => this.setState({ users: [], loading: false });
@@ -54,7 +64,7 @@ getUser= async username => {
   };
 
   render() {
-    const { users, user, loading } = this.state;
+    const { users, user, repos, loading } = this.state;
 
     return (
       <Router>
@@ -71,7 +81,7 @@ getUser= async username => {
             )} />
             <Route exact path='/about' component={About} />
             <Route exact path='/user/:login' render={props => (
-              <User { ...props } getUser={this.getUser} user={user} loading={loading}  />
+              <User { ...props } getUser={this.getUser} getUserRepos={this.getUserRepos} repos={repos} user={user} loading={loading}  />
             )} />
           </Switch>
         </div>
